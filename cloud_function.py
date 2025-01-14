@@ -65,4 +65,4 @@ def predict_image_from_url(url):
 
 
 # Example usage:
-url = 'https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray'
+url = 'https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray/test/PNEUMONIA/person100_bacteria_477.jpeg'
