@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 import requests
 from io import BytesIO
-import tflite_runtime.interpreter as tflite
+import tensorflow as tf  # Use tensorflow instead of tflite_runtime
 
 
 # Function to download the image from the URL
@@ -36,8 +36,8 @@ def predict_image_from_url(url, model_path='DensNet_v5_06_0.960.keras.tflite'):
     # Preprocess the image
     X = preprocess_input(X)
     
-    # Load the TensorFlow Lite model
-    interpreter = tflite.Interpreter(model_path=model_path)
+    # Load the TensorFlow Lite model using TensorFlow
+    interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
     
     # Get input and output tensor details
@@ -64,13 +64,7 @@ def predict_image_from_url(url, model_path='DensNet_v5_06_0.960.keras.tflite'):
 
 
 # Example usage:
-url = 'https://w-abdit-x-ray-classification-p-162f9eae96324f11ae1d7edcea2f9a90.community.saturnenterprise.io/view/examples/examples/tensorflow/person100_bacteria_475.jpeg'
+url = 'https://github.com/Qaladid/images/blob/main/chest-xray/chest-xray/test/chest_xray/test/PNEUMONIA/person100_bacteria_477.jpeg'
 
 predicted_class, probability = predict_image_from_url(url)
 print(f"Predicted class: {predicted_class}, Probability: {probability}")
-
-
-
-
-
-
