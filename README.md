@@ -1,4 +1,4 @@
-# Pneumonia Prediction Model using VGG16
+# Pneumonia Prediction Model using DenseNet121
 
 ## Problem Formulation
 The goal of this project is to build an automated tool to assist medical professionals in faster and more accurate diagnosis of respiratory conditions, particularly pneumonia, using machine learning.
