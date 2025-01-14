@@ -1,5 +1,11 @@
 # Pneumonia Prediction Model using DenseNet121
 
+#### Pneumonia X-ray Image
+![Pneumonia Image](https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray/test/PNEUMONIA/person100_bacteria_477.jpeg)
+
+#### Normal X-ray Image
+![Normal Image](https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray/test/NORMAL/IM-0006-0001.jpeg)
+
 ## Problem Formulation
 The goal of this project is to build an automated tool to assist medical professionals in faster and more accurate diagnosis of respiratory conditions, particularly pneumonia, using machine learning.
 
