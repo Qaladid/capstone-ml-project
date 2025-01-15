@@ -1,4 +1,4 @@
-FROM us-docker.pkg.dev/deeplearning-platform-release/gcr.io/tf-cu113.2-6.py39
+FROM tensorflow/tensorflow:2.10.0-gpu
 
 WORKDIR /app
 
