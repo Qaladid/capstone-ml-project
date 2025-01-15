@@ -2,10 +2,11 @@
 # coding: utf-8
 
 import numpy as np
+import json
 from PIL import Image
 import requests
 from io import BytesIO
-import tensorflow as tf  # Use tensorflow instead of tflite_runtime
+import tensorflow as tf  
 
 
 # Function to download the image from the URL
@@ -63,6 +64,21 @@ def predict_image_from_url(url):
     # Return the result
     return predicted_class, probability
 
+# Simulating Google Cloud Function's request handler locally
+def predict(request):
+    # Get URL from the request (simulating how Cloud Function receives input)
+    url = request.get('url')
+    
+    if not url:
+        return "Error: URL is required", 400
+    
+    # Call the prediction function
+    result = predict_image_from_url(url)
+    
+    # Return the result in the form of a string (Google Cloud Functions typically returns HTTP responses)
+    return f"Prediction: {result[0]}, Probability: {result[1]}", 200
+
+
 
 # Example usage:
-url = 'https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray/test/PNEUMONIA/person100_bacteria_477.jpeg'
+# url = 'https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray/test/PNEUMONIA/person100_bacteria_477.jpeg'
