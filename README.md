@@ -18,7 +18,7 @@ This project is expected to enhance the diagnostic process for respiratory condi
 
 ## Data Source
 The dataset used for training the model is from Kaggle:  
-[Pneumonia Prediction Model using VGG16](https://www.kaggle.com/models/huzaifa10/pneumonia-prediction-model-using-vgg16)
+[kaggle](https://www.kaggle.com/models/huzaifa10/pneumonia-prediction-model-using-vgg16)
 
 ## Summary of Steps
 
