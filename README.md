@@ -18,7 +18,7 @@ This project is expected to enhance the diagnostic process for respiratory condi
 
 ## Data Source
 The dataset used for training the model is from Kaggle:  
-[kaggle](https://www.kaggle.com/models/huzaifa10/pneumonia-prediction-model-using-vgg16)
+[Kaggle](https://www.kaggle.com/models/huzaifa10/pneumonia-prediction-model-using-vgg16)
 
 ## Summary of Steps
 
@@ -102,15 +102,43 @@ To push the Docker image to Google Container Registry (GCR):
  docker push gcr.io/YOUR_PROJECT_ID/pneumonia-prediction
 ```
 
-### 3. **Deploy to Google Cloud Functions**
+### 3. Deploy to Google Cloud Functions
 
-Now, deploy the Docker image as a Google Cloud Function using the following command:
+This guide walks you through the process of deploying a machine learning model in a Docker container, pushing the container to Google Cloud Registry (GCR), deploying the model to Google Cloud Run, and exposing it via Google Cloud Functions.
+
+## 1. Build the Docker Image Locally
+
+### Requirements:
+- Docker installed on your local machine.
+- TensorFlow model `DensNet_v5_06_0.960.keras.tflite` file and the `cloud_function.py` file for prediction logic.
+
+### Steps:
+1. Create a `Dockerfile` that sets up the environment and installs necessary dependencies.
+You'll get the code in the Dockerfile in the root project directory.
+
+2. Build the Docker image:
 ```bash
-gcloud functions deploy pneumonia-prediction \
-  --image gcr.io/YOUR_PROJECT_ID/pneumonia-prediction \
-  --region us-central1 \
-  --trigger-http \
-  --allow-unauthenticated
+docker build -t pneumonia-prediction:v1 .
+```
+
+3. Test the Docker image locally (optional):
+```bash
+docker run -p 8080:8080 pneumonia-prediction:v1
+```
+## 2. Push Docker Image to Google Container Registry (GCR)
+1. Tag your Docker image to match the GCR format:
+```bash 
+docker tag pneumonia-prediction:v1 gcr.io/YOUR_PROJECT_ID/pneumonia-prediction:v1
+```
+
+2. Authenticate Docker with GCR (if not done already):
+```bash
+gcloud auth configure-docker
+```
+
+3. Push the Docker image to GCR:
+```bash
+docker push gcr.io/YOUR_PROJECT_ID/pneumonia-prediction:v1
 ```
 
 ### 4. **Test the Deployment**
