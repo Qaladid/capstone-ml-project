@@ -6,28 +6,32 @@ import json
 from PIL import Image
 import requests
 from io import BytesIO
-import tensorflow as tf  
-
+import tensorflow as tf
 
 # Function to download the image from the URL
 def download_image_from_url(url):
     response = requests.get(url)
+    
+    # Check if the URL actually returns an image
+    if 'image' not in response.headers['Content-Type']:
+        raise ValueError(f"URL did not return an image file. Content-Type: {response.headers['Content-Type']}")
+    
+    # Open the image
     img = Image.open(BytesIO(response.content))
     img = img.convert('RGB')  # Convert to RGB to ensure 3 channels
-    img = img.resize((224, 224), Image.NEAREST)  # Resize the image
+    img = img.resize((224, 224), Image.NEAREST)  # Resize the image to match the model input
     return img
 
 
 # Preprocess the image as expected by the model
 def preprocess_input(x):
     x /= 127.5
-    x -= 1.
+    x -= 1.  # Normalize image to be between -1 and 1
     return x
 
 
 # Load and process the image
 def predict_image_from_url(url):
-    # Automatically load the model
     model_path = 'DensNet_v5_06_0.960.keras.tflite'  # You can hardcode your model path here
     interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
@@ -35,7 +39,7 @@ def predict_image_from_url(url):
     # Download the image from URL
     img = download_image_from_url(url)
     
-    # Convert the image to numpy array
+    # Convert the image to a numpy array
     x = np.array(img, dtype='float32')
     X = np.array([x])
     
@@ -64,21 +68,22 @@ def predict_image_from_url(url):
     # Return the result
     return predicted_class, probability
 
-# Simulating Google Cloud Function's request handler locally
+
+# Cloud Function handler without Flask
 def predict(request):
-    # Get URL from the request (simulating how Cloud Function receives input)
-    url = request.get('url')
+    # Get URL from the request query parameters
+    url = request.args.get('url')
     
     if not url:
-        return "Error: URL is required", 400
+        return json.dumps({"error": "URL is required"}), 400  # Return error as JSON response
     
     # Call the prediction function
     result = predict_image_from_url(url)
     
-    # Return the result in the form of a string (Google Cloud Functions typically returns HTTP responses)
-    return f"Prediction: {result[0]}, Probability: {result[1]}", 200
+    # Return the result in JSON format
+    return json.dumps({
+        "prediction": result[0],
+        "probability": result[1]
+    })
 
 
-
-# Example usage:
-# url = 'https://github.com/Qaladid/images/raw/master/chest_xray/chest_xray/test/PNEUMONIA/person100_bacteria_477.jpeg'
